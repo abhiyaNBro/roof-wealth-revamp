@@ -36,7 +36,7 @@ const Index = () => {
       <ScrollAnimation />
       <Navbar />
       
-      <main className="flex-grow">
+      <main className="flex-grow relative overflow-x-hidden">
         <HeroSection />
         <ServiceSection />
         <AboutSection />
