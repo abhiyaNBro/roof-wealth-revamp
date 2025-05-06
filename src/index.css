@@ -126,6 +126,38 @@
   .parallax-bg {
     @apply absolute top-0 left-0 w-full h-[120%] -z-10 scale-110 bg-cover bg-center transition-transform duration-300;
   }
+
+  .glass-effect {
+    @apply backdrop-blur-lg bg-white/10 border border-white/20 shadow-lg;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-lg;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-roofing-primary to-roofing-accent bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-subtle {
+    @apply bg-gradient-to-br from-gray-50 to-gray-100;
+  }
+
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-roofing-primary to-roofing-accent;
+  }
+
+  .animate-spin-slow {
+    animation: spin 10s linear infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
 }
 
 /* Utility classes for cursor effects */
@@ -136,33 +168,96 @@
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
-  transform: translate(-50%, -50%);
   z-index: 999;
-  transition: transform 0.1s;
+  mix-blend-mode: difference;
+  filter: blur(1px);
 }
 
+/* Enhanced hover effects */
 .hover-scale {
-  transition: transform 0.3s ease-out;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hover-scale:hover {
   transform: scale(1.05);
 }
 
-/* Custom scroll bar */
+/* Button animations */
+.btn-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-animated::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: transform 0.6s ease-out;
+  z-index: -1;
+}
+
+.btn-animated:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #8B5E3C;
   border-radius: 5px;
+  border: 2px solid #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C9A66B;
+  background: #D35400;
+}
+
+/* Image hover effects */
+.img-hover-zoom {
+  overflow: hidden;
+}
+
+.img-hover-zoom img {
+  transition: transform 0.75s ease-in-out;
+}
+
+.img-hover-zoom:hover img {
+  transform: scale(1.1) rotate(1deg);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .cursor-follower {
+    display: none;
+  }
 }
