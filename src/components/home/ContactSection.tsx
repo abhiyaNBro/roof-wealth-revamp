@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +19,13 @@ const formSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters' })
 });
 
-const MapMarker = () => (
+// Fix the MapMarker component by adding proper props interface
+interface MapMarkerProps {
+  lat: number;
+  lng: number;
+}
+
+const MapMarker = ({ lat, lng }: MapMarkerProps) => (
   <div className="relative -translate-x-1/2 -translate-y-full">
     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-6 h-6 bg-roofing-accent rounded-full border-4 border-white shadow-lg" />
     <div className="bg-white px-4 py-2 rounded-lg shadow-lg">
