@@ -1,12 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from 'react';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import HeroSection from '@/components/home/HeroSection';
+import ServiceSection from '@/components/home/ServiceSection';
+import AboutSection from '@/components/home/AboutSection';
+import ProjectsSection from '@/components/home/ProjectsSection';
+import TestimonialSection from '@/components/home/TestimonialSection';
+import ContactSection from '@/components/home/ContactSection';
+import { CursorFollower, ScrollAnimation } from '@/components/Animation';
 
 const Index = () => {
+  // Update page title
+  useEffect(() => {
+    document.title = 'Elite Roof - America\'s Premier Roof Restoration Experts';
+  }, []);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <CursorFollower />
+      <ScrollAnimation />
+      <Navbar />
+      
+      <main className="flex-grow">
+        <HeroSection />
+        <ServiceSection />
+        <AboutSection />
+        <ProjectsSection />
+        <TestimonialSection />
+        <ContactSection />
+      </main>
+      
+      <Footer />
     </div>
   );
 };
