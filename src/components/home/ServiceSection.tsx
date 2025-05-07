@@ -94,10 +94,14 @@ export default function ServiceSection() {
     <section id="services" className="py-20 md:py-32 relative">
       <div className="absolute inset-0 z-0">
         <div 
-          className="w-full h-full bg-cover bg-center opacity-15"
-          style={{ backgroundImage: `url(/lovable-uploads/300028b0-ac0f-42f6-8892-385ca559a97b.png)` }}
+          className="w-full h-full bg-cover bg-center opacity-20"
+          style={{ 
+            backgroundImage: `url(/lovable-uploads/300028b0-ac0f-42f6-8892-385ca559a97b.png)`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover'
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/60 to-white/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white/90"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">

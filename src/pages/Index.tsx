@@ -29,6 +29,71 @@ const FloatingElement = ({ delay, size, position, color }: { delay: number, size
   );
 };
 
+// New component for the featured image in the left side
+const FeatureImage = () => {
+  return (
+    <motion.div 
+      className="fixed left-6 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block"
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8, delay: 1.2 }}
+    >
+      <motion.div
+        className="relative"
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <motion.div 
+          className="absolute inset-0 border-4 border-roofing-primary rounded-lg"
+          animate={{ 
+            boxShadow: ["0 0 0 rgba(211,84,0,0.3)", "0 0 20px rgba(211,84,0,0.6)", "0 0 0 rgba(211,84,0,0.3)"] 
+          }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+        />
+        <motion.div
+          className="w-56 h-72 rounded-lg overflow-hidden"
+        >
+          <motion.img
+            src="/lovable-uploads/300028b0-ac0f-42f6-8892-385ca559a97b.png"
+            alt="American Quality Restoration"
+            className="w-full h-full object-cover"
+            animate={{
+              scale: [1, 1.05, 1],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+        
+        <motion.div 
+          className="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg"
+          initial={{ scale: 0, rotate: -90 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 1.5, type: "spring" }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="text-roofing-primary font-bold text-sm"
+          >
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <path
+                id="textPath"
+                d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0"
+                fill="none"
+              />
+              <text fill="currentColor">
+                <textPath xlinkHref="#textPath">
+                  • QUALITY RESTORATION •
+                </textPath>
+              </text>
+            </svg>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const AnimatedBackground = () => {
   return (
     <>
@@ -99,6 +164,9 @@ const Index = () => {
       <FloatingElement delay={1.5} size={80} position="bottom-[10%] left-[5%]" color="bg-gradient-to-r from-roofing-accent/10 to-roofing-primary/20" />
       <FloatingElement delay={0.7} size={96} position="top-[60%] right-[10%]" />
       <FloatingElement delay={1.2} size={72} position="bottom-[40%] left-[20%]" />
+      
+      {/* Add the featured image component */}
+      <FeatureImage />
       
       <AnimatedBackground />
       <CursorFollower />

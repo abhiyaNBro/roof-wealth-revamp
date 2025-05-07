@@ -1,4 +1,3 @@
-
 import { useRef, useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,11 +23,11 @@ export default function AboutSection() {
     "/lovable-uploads/34161067-b83f-48ba-b18c-8d72953aa5f5.png"
   ];
   
-  // Slideshow effect
+  // Slideshow effect with increased reliability
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+    }, 2000); // Change image every 2 seconds
     
     return () => clearInterval(interval);
   }, [images.length]);
@@ -39,6 +38,7 @@ export default function AboutSection() {
     }
   }, [isInView, controls]);
   
+  // Keep existing scale effect for image
   useEffect(() => {
     const handleScroll = () => {
       if (imageRef.current) {
@@ -105,7 +105,7 @@ export default function AboutSection() {
           initial="hidden"
           animate={controls}
         >
-          {/* Image Slideshow Section with Enhanced Animation */}
+          {/* Enhanced Image Slideshow Section */}
           <motion.div variants={itemVariants} className="relative order-2 lg:order-1">
             <div className="relative z-10">
               <motion.div 
@@ -113,8 +113,8 @@ export default function AboutSection() {
                 className="overflow-hidden rounded-lg shadow-2xl transform transition-all duration-1000"
                 whileHover={{ scale: 1.05 }}
               >
-                {/* Image Slideshow */}
-                <div className="relative aspect-w-16 aspect-h-9 w-full overflow-hidden">
+                {/* Image Slideshow with assured visibility */}
+                <div className="relative aspect-square w-full overflow-hidden">
                   {images.map((src, index) => (
                     <motion.img
                       key={index}
@@ -127,6 +127,10 @@ export default function AboutSection() {
                         scale: currentImageIndex === index ? 1 : 1.1
                       }}
                       transition={{ duration: 0.7, ease: "easeInOut" }}
+                      style={{ 
+                        display: currentImageIndex === index ? 'block' : 'none',
+                        zIndex: currentImageIndex === index ? 10 : 1 
+                      }}
                     />
                   ))}
                 </div>
@@ -149,7 +153,7 @@ export default function AboutSection() {
                 ))}
               </div>
               
-              {/* Floating Experience Card */}
+              {/* Keep existing floating cards */}
               <ParallaxEffect speed={0.1} direction="up" className="absolute -bottom-10 -right-10 z-20">
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
@@ -172,7 +176,6 @@ export default function AboutSection() {
                 </motion.div>
               </ParallaxEffect>
               
-              {/* Stats Card */}
               <ParallaxEffect speed={0.15} direction="down" className="absolute -top-8 -left-8 z-20">
                 <motion.div
                   animate={{ y: [0, 10, 0] }}
@@ -207,7 +210,7 @@ export default function AboutSection() {
             />
           </motion.div>
           
-          {/* Content Section with Enhanced Text and Animations */}
+          {/* Keep existing content section */}
           <motion.div variants={itemVariants} className="order-1 lg:order-2">
             <motion.p 
               className="text-roofing-primary font-medium mb-2 inline-block px-4 py-1 rounded-full bg-roofing-primary/10"
