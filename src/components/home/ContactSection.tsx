@@ -27,17 +27,12 @@ interface MapMarkerProps {
 }
 
 const MapMarker = ({ lat, lng }: MapMarkerProps) => (
-  <motion.div 
-    className="relative -translate-x-1/2 -translate-y-full"
-    initial={{ scale: 0, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
-    transition={{ type: "spring", damping: 12 }}
-  >
+  <div className="relative -translate-x-1/2 -translate-y-full">
     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-6 h-6 bg-roofing-accent rounded-full border-4 border-white shadow-lg" />
     <div className="bg-white px-4 py-2 rounded-lg shadow-lg">
-      <p className="font-semibold text-roofing-dark">American Quality Restoration</p>
+      <p className="font-semibold text-roofing-dark">Elite Roof HQ</p>
     </div>
-  </motion.div>
+  </div>
 );
 
 export default function ContactSection() {
@@ -65,24 +60,6 @@ export default function ContactSection() {
       // For demonstration, we're simulating an API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Send email using mailto link
-      const subject = `New Inquiry: ${values.service}`;
-      const body = `
-        Name: ${values.name}
-        Email: ${values.email}
-        Phone: ${values.phone}
-        Service: ${values.service}
-        Message: ${values.message}
-      `;
-      
-      // Create a hidden anchor and click it to open the email client
-      const mailtoLink = document.createElement('a');
-      mailtoLink.href = `mailto:americanqualityrestoration21@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      mailtoLink.style.display = 'none';
-      document.body.appendChild(mailtoLink);
-      mailtoLink.click();
-      document.body.removeChild(mailtoLink);
-      
       setFormSubmitted(true);
       toast({
         title: "Message Sent Successfully",
@@ -103,13 +80,13 @@ export default function ContactSection() {
     }
   };
 
-  // Edgewood, MD location coordinates
+  // Default map center (Chicago)
   const defaultProps = {
     center: {
-      lat: 39.4183,
-      lng: -76.2967
+      lat: 41.8781,
+      lng: -87.6298
     },
-    zoom: 15
+    zoom: 14
   };
 
   // Animation variants
@@ -129,10 +106,10 @@ export default function ContactSection() {
   };
 
   const socialIcons = [
-    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600', url: 'https://www.facebook.com/' },
-    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500', url: 'https://twitter.com/' },
-    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600', url: 'https://www.instagram.com/' },
-    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600', url: 'https://www.youtube.com/' },
+    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600' },
+    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500' },
+    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600' },
+    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600' },
   ];
 
   return (
@@ -213,8 +190,8 @@ export default function ContactSection() {
                     <div>
                       <h4 className="font-medium mb-1">Our Location</h4>
                       <p className="text-gray-300">
-                        2200 Perry Ave<br />
-                        Edgewood, MD 21040
+                        123 Roofing Way<br />
+                        Chicago, IL 60601
                       </p>
                     </div>
                   </motion.div>
@@ -236,7 +213,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Email Us</h4>
-                      <p className="text-gray-300">americanqualityrestoration21@gmail.com</p>
+                      <p className="text-gray-300">info@eliteroofusa.com</p>
                       <p className="text-gray-300">support@eliteroofusa.com</p>
                     </div>
                   </motion.div>
@@ -250,11 +227,9 @@ export default function ContactSection() {
                         whileHover={{ y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         transition={{ type: "spring", stiffness: 300 }}
-                        href={social.url}
+                        href="#"
                         key={social.name}
                         className={`w-10 h-10 rounded-full bg-white/10 ${social.color} flex items-center justify-center transition-colors duration-300`}
-                        target="_blank"
-                        rel="noopener noreferrer"
                       >
                         <span className="sr-only">{social.name}</span>
                         {social.icon}
@@ -458,25 +433,15 @@ export default function ContactSection() {
           className="mt-16 rounded-xl overflow-hidden shadow-xl h-96 bg-gray-100"
         >
           <div className="w-full h-full">
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: "" }} 
-              defaultCenter={defaultProps.center}
-              defaultZoom={defaultProps.zoom}
-              options={{
-                styles: [
-                  {
-                    featureType: "all",
-                    elementType: "labels.text.fill",
-                    stylers: [{ saturation: 36 }, { color: "#333333" }, { lightness: 40 }]
-                  }
-                ]
-              }}
-            >
-              <MapMarker
-                lat={39.4183}
-                lng={-76.2967}
-              />
-            </GoogleMapReact>
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <div className="text-center p-8">
+                <h3 className="text-xl font-semibold mb-2 text-roofing-primary">Our Location</h3>
+                <p className="text-gray-600 mb-4">123 Roofing Way, Chicago, IL 60601</p>
+                <p className="text-gray-500 text-sm">
+                  Note: Google Maps requires an API key to show the map.
+                </p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
