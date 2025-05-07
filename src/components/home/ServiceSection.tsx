@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Shield, Home, Settings, Star } from 'lucide-react';
+import { Shield, Home, Settings, Star, Drone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -10,9 +10,10 @@ interface ServiceCardProps {
   description: string;
   delay?: number;
   index: number;
+  highlight?: boolean;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, index }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, index, highlight }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -22,7 +23,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ind
       className="group"
     >
       <motion.div 
-        className="bg-white rounded-lg shadow-lg p-8 border border-gray-100 h-full relative overflow-hidden"
+        className={`bg-white rounded-lg shadow-lg p-8 border border-gray-100 h-full relative overflow-hidden ${highlight ? 'ring-2 ring-roofing-accent ring-offset-2' : ''}`}
         whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
         transition={{ type: "spring", stiffness: 300 }}
       >
@@ -33,7 +34,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ind
                       transition-all duration-500 group-hover:bg-roofing-primary/10" />
         
         <div className="relative z-10">
-          <div className="rounded-full bg-roofing-light p-4 inline-block mb-6 group-hover:bg-roofing-primary/10 transition-colors">
+          <div className={`rounded-full ${highlight ? 'bg-roofing-primary/20' : 'bg-roofing-light'} p-4 inline-block mb-6 group-hover:bg-roofing-primary/10 transition-colors`}>
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6, type: "spring" }}
@@ -64,6 +65,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ind
 
 const services = [
   {
+    icon: <Drone className="w-8 h-8 text-roofing-primary" />,
+    title: "Free Drone Inspection",
+    description: "Cutting-edge drone technology to inspect your roof safely and thoroughly without any cost to you.",
+    highlight: true
+  },
+  {
     icon: <Home className="w-8 h-8 text-roofing-primary" />,
     title: "Roof Restoration",
     description: "Complete roof restoration services to bring your roof back to its original condition or better."
@@ -77,11 +84,6 @@ const services = [
     icon: <Shield className="w-8 h-8 text-roofing-primary" />,
     title: "Roof Protection",
     description: "Premium protective coatings and treatments to extend the life of your roof and prevent damage."
-  },
-  {
-    icon: <Star className="w-8 h-8 text-roofing-primary" />,
-    title: "Roof Inspections",
-    description: "Thorough roof inspections to identify potential issues before they become major problems."
   }
 ];
 
@@ -89,8 +91,16 @@ export default function ServiceSection() {
   const isMobile = useIsMobile();
 
   return (
-    <section id="services" className="py-20 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="container mx-auto px-4">
+    <section id="services" className="py-20 md:py-32 relative">
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="w-full h-full bg-cover bg-center opacity-15"
+          style={{ backgroundImage: `url(/lovable-uploads/300028b0-ac0f-42f6-8892-385ca559a97b.png)` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/60 to-white/90"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -122,6 +132,7 @@ export default function ServiceSection() {
               title={service.title} 
               description={service.description}
               index={index}
+              highlight={service.highlight}
             />
           ))}
         </div>

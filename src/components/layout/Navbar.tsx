@@ -58,7 +58,7 @@ export default function Navbar() {
         >
           <motion.img 
             src="/lovable-uploads/88a8d195-6b47-42cf-8014-3f88cb5bb8e8.png" 
-            alt="Elite Roof Logo" 
+            alt="American Quality Restoration Logo" 
             className="h-14 w-auto" 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

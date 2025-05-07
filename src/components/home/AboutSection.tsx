@@ -1,5 +1,5 @@
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScrollReveal from '../ScrollReveal';
@@ -14,6 +14,24 @@ export default function AboutSection() {
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
   const controls = useAnimation();
   const isMobile = useIsMobile();
+  
+  // Image slideshow state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = [
+    "/lovable-uploads/2c71744c-a9ae-40be-bc32-5bb3e63e8585.png",
+    "/lovable-uploads/f4a559db-5c34-4d54-97d3-0cd7631cb737.png",
+    "/lovable-uploads/7002166b-f324-4f82-a71d-6ec90f696612.png",
+    "/lovable-uploads/34161067-b83f-48ba-b18c-8d72953aa5f5.png"
+  ];
+  
+  // Slideshow effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 2000);
+    
+    return () => clearInterval(interval);
+  }, [images.length]);
   
   useEffect(() => {
     if (isInView) {
@@ -87,7 +105,7 @@ export default function AboutSection() {
           initial="hidden"
           animate={controls}
         >
-          {/* Image Section with Enhanced Animation */}
+          {/* Image Slideshow Section with Enhanced Animation */}
           <motion.div variants={itemVariants} className="relative order-2 lg:order-1">
             <div className="relative z-10">
               <motion.div 
@@ -95,12 +113,41 @@ export default function AboutSection() {
                 className="overflow-hidden rounded-lg shadow-2xl transform transition-all duration-1000"
                 whileHover={{ scale: 1.05 }}
               >
-                <img 
-                  src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Roofers working on a house" 
-                  className="w-full h-auto"
-                />
+                {/* Image Slideshow */}
+                <div className="relative aspect-w-16 aspect-h-9 w-full overflow-hidden">
+                  {images.map((src, index) => (
+                    <motion.img
+                      key={index}
+                      src={src}
+                      alt={`American Quality Restoration work ${index + 1}`}
+                      className="w-full h-full object-cover absolute inset-0"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: currentImageIndex === index ? 1 : 0,
+                        scale: currentImageIndex === index ? 1 : 1.1
+                      }}
+                      transition={{ duration: 0.7, ease: "easeInOut" }}
+                    />
+                  ))}
+                </div>
               </motion.div>
+              
+              {/* Slideshow Indicators */}
+              <div className="flex justify-center mt-4 space-x-2">
+                {images.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${currentImageIndex === index ? 'bg-roofing-primary' : 'bg-gray-300'}`}
+                    onClick={() => setCurrentImageIndex(index)}
+                    initial={{ scale: 1 }}
+                    animate={{ 
+                      scale: currentImageIndex === index ? [1, 1.2, 1] : 1,
+                      backgroundColor: currentImageIndex === index ? 'var(--roofing-primary)' : 'rgb(209, 213, 219)'
+                    }}
+                    transition={{ duration: 0.5 }}
+                  />
+                ))}
+              </div>
               
               {/* Floating Experience Card */}
               <ParallaxEffect speed={0.1} direction="up" className="absolute -bottom-10 -right-10 z-20">
@@ -190,7 +237,7 @@ export default function AboutSection() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              For over <span className="font-semibold text-roofing-primary">25 years</span>, Elite Roof has been providing exceptional roofing solutions to homeowners and businesses across America. Our team of skilled professionals is committed to delivering the highest quality craftsmanship and customer service.
+              For over <span className="font-semibold text-roofing-primary">25 years</span>, American Quality Restoration has been providing exceptional roofing solutions to homeowners and businesses across America. Our team of skilled professionals is committed to delivering the highest quality craftsmanship and customer service.
             </motion.p>
             
             {/* Features Grid */}

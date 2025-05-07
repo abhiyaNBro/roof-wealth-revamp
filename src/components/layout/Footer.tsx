@@ -76,7 +76,7 @@ export default function Footer() {
             >
               <motion.img 
                 src="/lovable-uploads/88a8d195-6b47-42cf-8014-3f88cb5bb8e8.png"
-                alt="Elite Roof Logo" 
+                alt="American Quality Restoration Logo" 
                 className="h-14 w-auto mb-4" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -233,7 +233,7 @@ export default function Footer() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            © {new Date().getFullYear()} Elite Roof. All rights reserved.
+            © {new Date().getFullYear()} American Quality Restoration. All rights reserved.
           </motion.div>
           <div className="text-gray-400 text-sm">
             <motion.a 
