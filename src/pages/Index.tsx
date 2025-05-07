@@ -26,7 +26,7 @@ const Index = () => {
   });
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-roofing-primary to-roofing-accent z-[100]"
         style={{ scaleX, originX: 0 }}
