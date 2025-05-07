@@ -10,7 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import GoogleMapReact from 'google-map-react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -20,7 +19,7 @@ const formSchema = z.object({
   message: z.string().min(10, { message: 'Message must be at least 10 characters' })
 });
 
-// Fix the MapMarker component by adding proper props interface
+// Map Marker component
 interface MapMarkerProps {
   lat: number;
   lng: number;
@@ -39,6 +38,7 @@ export default function ContactSection() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,9 +56,14 @@ export default function ContactSection() {
     console.log('Form submitted:', values);
     
     try {
-      // Here you would normally send data to your backend API
-      // For demonstration, we're simulating an API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Here you would send the form data to the server
+      // For this implementation, we're simulating a successful form submission
+      
+      // This is where you would send the email to americanqualityrestoration21@gmail.com
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulating API call
+      
+      // Email would be redirected to americanqualityrestoration21@gmail.com
+      console.log('Email would be sent to: americanqualityrestoration21@gmail.com');
       
       setFormSubmitted(true);
       toast({
@@ -80,13 +85,13 @@ export default function ContactSection() {
     }
   };
 
-  // Default map center (Chicago)
-  const defaultProps = {
+  // Updated map center to 2200 Perry Ave, Edgewood, MD 21040
+  const mapProps = {
     center: {
-      lat: 41.8781,
-      lng: -87.6298
+      lat: 39.41753,
+      lng: -76.2944
     },
-    zoom: 14
+    zoom: 15
   };
 
   // Animation variants
@@ -106,10 +111,10 @@ export default function ContactSection() {
   };
 
   const socialIcons = [
-    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600' },
-    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500' },
-    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600' },
-    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600' },
+    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600', link: 'https://facebook.com' },
+    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500', link: 'https://twitter.com' },
+    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600', link: 'https://instagram.com' },
+    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600', link: 'https://youtube.com' },
   ];
 
   return (
@@ -190,8 +195,8 @@ export default function ContactSection() {
                     <div>
                       <h4 className="font-medium mb-1">Our Location</h4>
                       <p className="text-gray-300">
-                        123 Roofing Way<br />
-                        Chicago, IL 60601
+                        2200 Perry Ave<br />
+                        Edgewood, MD 21040
                       </p>
                     </div>
                   </motion.div>
@@ -213,8 +218,7 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Email Us</h4>
-                      <p className="text-gray-300">info@eliteroofusa.com</p>
-                      <p className="text-gray-300">support@eliteroofusa.com</p>
+                      <p className="text-gray-300">americanqualityrestoration21@gmail.com</p>
                     </div>
                   </motion.div>
                 </div>
@@ -227,7 +231,9 @@ export default function ContactSection() {
                         whileHover={{ y: -5 }}
                         whileTap={{ scale: 0.9 }}
                         transition={{ type: "spring", stiffness: 300 }}
-                        href="#"
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         key={social.name}
                         className={`w-10 h-10 rounded-full bg-white/10 ${social.color} flex items-center justify-center transition-colors duration-300`}
                       >
@@ -393,7 +399,11 @@ export default function ContactSection() {
                           )}
                         />
                         
-                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <motion.div 
+                          whileHover={{ scale: 1.02 }} 
+                          whileTap={{ scale: 0.98 }}
+                          className="relative"
+                        >
                           <Button 
                             type="submit" 
                             className="w-full bg-roofing-primary hover:bg-roofing-accent transition-colors shadow-lg shadow-roofing-primary/20"
@@ -414,6 +424,27 @@ export default function ContactSection() {
                               </>
                             )}
                           </Button>
+                          {!isSubmitting && (
+                            <motion.div 
+                              className="absolute inset-0 -z-10"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <motion.div 
+                                className="absolute inset-0 bg-roofing-primary/20 rounded-md blur-md"
+                                animate={{ 
+                                  scale: [0.85, 1.05, 0.85],
+                                  opacity: [0.5, 0.8, 0.5]
+                                }}
+                                transition={{
+                                  duration: 3,
+                                  repeat: Infinity,
+                                  ease: "easeInOut"
+                                }}
+                              />
+                            </motion.div>
+                          )}
                         </motion.div>
                       </form>
                     </Form>
@@ -424,24 +455,33 @@ export default function ContactSection() {
           </motion.div>
         </div>
         
-        {/* Map */}
+        {/* Map with updated location */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-16 rounded-xl overflow-hidden shadow-xl h-96 bg-gray-100"
+          className="mt-16 rounded-xl overflow-hidden shadow-xl h-96 bg-gray-100 relative"
         >
           <div className="w-full h-full">
-            <div className="w-full h-full flex items-center justify-center bg-gray-100">
-              <div className="text-center p-8">
-                <h3 className="text-xl font-semibold mb-2 text-roofing-primary">Our Location</h3>
-                <p className="text-gray-600 mb-4">123 Roofing Way, Chicago, IL 60601</p>
-                <p className="text-gray-500 text-sm">
-                  Note: Google Maps requires an API key to show the map.
-                </p>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3082.966326641131!2d-76.29658372346904!3d39.41753087159477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c7dd0c280e3fbf%3A0xb934fedbcf61db03!2s2200%20Perry%20Ave%2C%20Edgewood%2C%20MD%2021040!5e0!3m2!1sen!2sus!4v1715021767570!5m2!1sen!2sus"
+              className="w-full h-full border-0"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              onLoad={() => setMapLoaded(true)}
+              title="Office Location"
+            ></iframe>
+            
+            {/* Loading state for map */}
+            {!mapLoaded && (
+              <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-roofing-primary border-t-transparent mb-4"></div>
+                  <p className="text-gray-600">Loading map...</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </motion.div>
       </div>

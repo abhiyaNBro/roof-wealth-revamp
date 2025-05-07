@@ -12,8 +12,8 @@ export default function Footer() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter signup
     console.log('Newsletter signup:', email);
+    console.log('Email would be sent to: americanqualityrestoration21@gmail.com');
     setEmail('');
     toast({
       title: "Newsletter Subscription",
@@ -23,18 +23,40 @@ export default function Footer() {
   };
 
   const socialIcons = [
-    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600' },
-    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500' },
-    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600' },
-    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600' },
+    { name: 'facebook', icon: <Facebook size={18} />, color: 'hover:bg-blue-600', link: 'https://facebook.com' },
+    { name: 'twitter', icon: <Twitter size={18} />, color: 'hover:bg-sky-500', link: 'https://twitter.com' },
+    { name: 'instagram', icon: <Instagram size={18} />, color: 'hover:bg-pink-600', link: 'https://instagram.com' },
+    { name: 'youtube', icon: <Youtube size={18} />, color: 'hover:bg-red-600', link: 'https://youtube.com' },
   ];
 
   return (
     <footer className="bg-roofing-dark text-white relative overflow-hidden">
-      {/* Background Design Elements */}
+      {/* Enhanced Background Design Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-roofing-primary"></div>
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-roofing-primary to-roofing-accent"></div>
+        <motion.div 
+          className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-roofing-primary"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.7, 0.5]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-roofing-primary to-roofing-accent"
+          animate={{
+            backgroundPosition: ['0% 0%', '100% 0%'],
+            opacity: [0.7, 1, 0.7]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
       </div>
       
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
@@ -47,7 +69,11 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center">
+            <motion.div 
+              className="flex items-center"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
               <motion.img 
                 src="/lovable-uploads/88a8d195-6b47-42cf-8014-3f88cb5bb8e8.png"
                 alt="Elite Roof Logo" 
@@ -56,20 +82,28 @@ export default function Footer() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               />
-            </div>
+            </motion.div>
             <p className="text-gray-300 max-w-xs">
               Providing exceptional roof restoration services across America since 1995.
               We pride ourselves on quality workmanship and customer satisfaction.
             </p>
             <div className="flex space-x-4 pt-4">
-              {/* Social Icons */}
+              {/* Social Icons with enhanced animations */}
               {socialIcons.map((social) => (
                 <motion.a 
-                  href="#"
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer" 
                   key={social.name}
                   className={`w-10 h-10 rounded-full bg-white/10 ${social.color} flex items-center justify-center transition-colors duration-300`}
-                  whileHover={{ y: -5 }}
+                  whileHover={{ y: -5, scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    y: { type: "spring", stiffness: 300 },
+                    opacity: { duration: 0.5 }
+                  }}
                 >
                   <span className="sr-only">{social.name}</span>
                   {social.icon}
@@ -100,7 +134,10 @@ export default function Footer() {
                     href={`#${link.toLowerCase().replace(' ', '-')}`}
                     className="text-gray-300 hover:text-roofing-accent transition-colors duration-300"
                   >
-                    <motion.span whileHover={{ x: 5 }} className="inline-block">
+                    <motion.span 
+                      whileHover={{ x: 5 }} 
+                      className="inline-block"
+                    >
                       {link}
                     </motion.span>
                   </a>
@@ -125,8 +162,8 @@ export default function Footer() {
               >
                 <MapPin className="w-5 h-5 text-roofing-accent mr-3 mt-1" />
                 <span className="text-gray-300">
-                  123 Roofing Way<br />
-                  Construction City, USA 12345
+                  2200 Perry Ave<br />
+                  Edgewood, MD 21040
                 </span>
               </motion.div>
               <motion.div 
@@ -141,7 +178,7 @@ export default function Footer() {
                 whileHover={{ x: 5 }}
               >
                 <Mail className="w-5 h-5 text-roofing-accent mr-3" />
-                <span className="text-gray-300">info@eliteroofusa.com</span>
+                <span className="text-gray-300">americanqualityrestoration21@gmail.com</span>
               </motion.div>
             </div>
           </motion.div>
@@ -167,10 +204,22 @@ export default function Footer() {
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 required
               />
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <motion.div 
+                whileHover={{ scale: 1.02 }} 
+                whileTap={{ scale: 0.98 }}
+                className="relative overflow-hidden"
+              >
                 <Button className="w-full bg-roofing-accent hover:bg-roofing-primary">
                   Subscribe
                 </Button>
+                <motion.div
+                  className="absolute inset-0 -z-10" 
+                  animate={{
+                    background: ['linear-gradient(90deg, rgba(211,84,0,0.5) 0%, rgba(211,84,0,0) 100%)', 
+                                'linear-gradient(90deg, rgba(211,84,0,0) 0%, rgba(211,84,0,0.5) 100%)']
+                  }}
+                  transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+                />
               </motion.div>
             </form>
           </motion.div>
@@ -178,12 +227,29 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-400 text-sm mb-4 md:mb-0">
+          <motion.div 
+            className="text-gray-400 text-sm mb-4 md:mb-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
             © {new Date().getFullYear()} Elite Roof. All rights reserved.
-          </div>
+          </motion.div>
           <div className="text-gray-400 text-sm">
-            <a href="#" className="hover:text-white mr-6">Privacy Policy</a>
-            <a href="#" className="hover:text-white">Terms of Service</a>
+            <motion.a 
+              href="#" 
+              className="hover:text-white mr-6"
+              whileHover={{ y: -2 }}
+            >
+              Privacy Policy
+            </motion.a>
+            <motion.a 
+              href="#" 
+              className="hover:text-white"
+              whileHover={{ y: -2 }}
+            >
+              Terms of Service
+            </motion.a>
           </div>
         </div>
       </div>

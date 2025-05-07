@@ -1,6 +1,6 @@
 
 import { useEffect, useState, useRef } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 export function CursorFollower() {
@@ -8,6 +8,7 @@ export function CursorFollower() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
   
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -35,13 +36,23 @@ export function CursorFollower() {
       setIsHovering(false);
     };
     
+    const onMouseDown = () => {
+      setIsClicking(true);
+    };
+    
+    const onMouseUp = () => {
+      setIsClicking(false);
+    };
+    
     // Add event listeners
     window.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseenter', onMouseEnter);
     document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mouseup', onMouseUp);
     
     // Add hover listeners to interactive elements
-    const interactiveElements = document.querySelectorAll('button, a');
+    const interactiveElements = document.querySelectorAll('button, a, input, select, textarea');
     interactiveElements.forEach((el) => {
       el.addEventListener('mouseenter', onHoverStart);
       el.addEventListener('mouseleave', onHoverEnd);
@@ -51,27 +62,30 @@ export function CursorFollower() {
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseenter', onMouseEnter);
       document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mouseup', onMouseUp);
       
       interactiveElements.forEach((el) => {
         el.removeEventListener('mouseenter', onHoverStart);
         el.removeEventListener('mouseleave', onHoverEnd);
       });
     };
-  }, [isVisible, isHovering]);
+  }, [isVisible, isHovering, isClicking]);
   
   return (
     <motion.div 
       ref={cursorRef} 
-      className="cursor-follower"
+      className="cursor-follower hidden md:block"
       animate={{ 
         x: mousePosition.x, 
         y: mousePosition.y, 
-        scale: isHovering ? 1.5 : 1,
+        scale: isHovering ? 1.5 : isClicking ? 0.8 : 1,
         opacity: isVisible ? 1 : 0,
+        backgroundColor: isHovering ? 'rgba(211, 84, 0, 0.7)' : 'rgba(139, 94, 60, 0.7)'
       }}
       transition={{ 
         type: "spring",
-        damping: 15,
+        damping: isClicking ? 25 : 15,
         stiffness: 150,
         mass: 0.1
       }}
@@ -103,7 +117,64 @@ export function ScrollAnimation() {
     };
   }, []);
   
-  return null;
+  // Add a floating particles effect 
+  const [particles, setParticles] = useState<Array<{
+    id: number;
+    x: number;
+    y: number;
+    size: number;
+    speed: number;
+    opacity: number;
+  }>>([]);
+  
+  useEffect(() => {
+    // Create particles only on non-mobile devices
+    if (window.innerWidth > 768) {
+      const newParticles = Array.from({ length: 15 }, (_, i) => ({
+        id: i,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 4 + 1,
+        speed: Math.random() * 1 + 0.2,
+        opacity: Math.random() * 0.5 + 0.1
+      }));
+      
+      setParticles(newParticles);
+    }
+  }, []);
+  
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden md:block">
+      <AnimatePresence>
+        {particles.map(particle => (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full bg-roofing-primary"
+            initial={{
+              x: particle.x,
+              y: particle.y,
+              opacity: particle.opacity,
+              scale: 0
+            }}
+            animate={{
+              y: [particle.y, particle.y - 200 - particle.speed * 400],
+              opacity: [particle.opacity, 0],
+              scale: [0, particle.size]
+            }}
+            transition={{
+              duration: 10 / particle.speed,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+            }}
+          />
+        ))}
+      </AnimatePresence>
+    </div>
+  );
 }
 
 export function AnimateOnScroll({ children }: { children: React.ReactNode }) {
@@ -180,4 +251,41 @@ export function useScrollEffect(ref: React.RefObject<HTMLElement>, callback: (pr
       window.removeEventListener('scroll', handleScroll);
     };
   }, [ref, callback]);
+}
+
+// Add a new animation component for enhanced visual effects
+export function AnimatedBackground() {
+  return (
+    <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
+      {/* Gradient Orbs */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-roofing-primary/10 to-roofing-accent/5 blur-3xl"
+        animate={{
+          x: [0, 10, 0, -10, 0],
+          y: [0, 15, 0, -15, 0],
+          scale: [1, 1.05, 1, 0.95, 1]
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-gradient-to-r from-roofing-accent/10 to-roofing-primary/5 blur-3xl"
+        animate={{
+          x: [0, -15, 0, 15, 0],
+          y: [0, -10, 0, 10, 0],
+          scale: [1, 0.9, 1, 1.1, 1]
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2
+        }}
+      />
+    </div>
+  );
 }
