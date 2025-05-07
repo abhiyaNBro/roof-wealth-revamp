@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Shield, Home, Settings, Star, Drone } from 'lucide-react';
+import { Shield, Home, Settings, Star, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -65,7 +65,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ind
 
 const services = [
   {
-    icon: <Drone className="w-8 h-8 text-roofing-primary" />,
+    icon: <Plane className="w-8 h-8 text-roofing-primary" />,
     title: "Free Drone Inspection",
     description: "Cutting-edge drone technology to inspect your roof safely and thoroughly without any cost to you.",
     highlight: true
